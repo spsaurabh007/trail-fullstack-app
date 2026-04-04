@@ -1,0 +1,91 @@
+<!-- Clicking the backdrop closes the modal -->
+<div class="backdrop" (click)="close.emit()"></div>
+
+<div class="modal" role="dialog" aria-modal="true">
+
+  <div class="modal-header">
+    <h2>New Task</h2>
+    <button class="btn-close" (click)="close.emit()">✕</button>
+  </div>
+
+  <!-- [formGroup] wires this <form> to the FormGroup instance in the component -->
+  <!-- (ngSubmit) fires when the form is submitted (button type="submit" or Enter key) -->
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+
+    <!-- Title ──────────────────────────────────────────────────────────── -->
+    <div class="field">
+      <label for="title">Title <span class="required">*</span></label>
+      <!-- formControlName connects this input to form.get('title') -->
+      <!-- [class.invalid] adds the CSS class when the field has errors AND was touched -->
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="What needs to be done?"
+        [class.invalid]="titleCtrl.invalid && titleCtrl.touched"
+      />
+      <!-- Validation messages — only show after the user has interacted with the field -->
+      @if (titleCtrl.touched && titleCtrl.hasError('required')) {
+        <span class="error">Title is required</span>
+      }
+      @if (titleCtrl.touched && titleCtrl.hasError('minlength')) {
+        <span class="error">Title must be at least 3 characters</span>
+      }
+    </div>
+
+    <!-- Description ────────────────────────────────────────────────────── -->
+    <div class="field">
+      <label for="desc">Description <span class="optional">(optional)</span></label>
+      <textarea
+        id="desc"
+        formControlName="description"
+        placeholder="Add some details…"
+        rows="2">
+      </textarea>
+    </div>
+
+    <!-- Priority + Category (side by side) ─────────────────────────────── -->
+    <div class="field-row">
+
+      <div class="field">
+        <label>Priority</label>
+        <div class="priority-buttons">
+          @for (p of priorities; track p) {
+            <button
+              type="button"
+              class="pri-btn"
+              [attr.data-p]="p"
+              [class.active]="form.get('priority')?.value === p"
+              (click)="form.get('priority')?.setValue(p)">
+              {{ p }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="category">Category</label>
+        <!-- formControlName works on <select> too -->
+        <select id="category" formControlName="category">
+          @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Due date ────────────────────────────────────────────────────────── -->
+    <div class="field">
+      <label for="dueDate">Due date <span class="optional">(optional)</span></label>
+      <input id="dueDate" type="date" formControlName="dueDate" />
+    </div>
+
+    <!-- Actions ────────────────────────────────────────────────────────── -->
+    <div class="actions">
+      <button type="button" class="btn-cancel" (click)="close.emit()">Cancel</button>
+      <button type="submit" class="btn-submit">Add Task</button>
+    </div>
+
+  </form>
+</div>

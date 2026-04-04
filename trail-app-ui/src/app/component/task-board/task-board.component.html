@@ -1,0 +1,93 @@
+<div class="board">
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-text">
+      <h1>My Tasks</h1>
+      <!-- String interpolation: {{ expr }} renders the value as text -->
+      <p class="subtitle">{{ filteredTasks().length }} task{{ filteredTasks().length !== 1 ? 's' : '' }} shown</p>
+    </div>
+    <!-- Event binding: (click) calls the expression when the element is clicked -->
+    <button class="btn-add" (click)="showModal.set(true)">
+      <span class="plus-icon">+</span> New Task
+    </button>
+  </header>
+
+  <!-- ── Stats ────────────────────────────────────────────────────────────── -->
+  <div class="stats">
+    <div class="stat-card stat-total">
+      <span class="stat-num">{{ svc.totalCount() }}</span>
+      <span class="stat-label">Total</span>
+    </div>
+    <div class="stat-card stat-active">
+      <span class="stat-num">{{ svc.activeCount() }}</span>
+      <span class="stat-label">Active</span>
+    </div>
+    <div class="stat-card stat-done">
+      <span class="stat-num">{{ svc.completedCount() }}</span>
+      <span class="stat-label">Done</span>
+    </div>
+    <div class="stat-card stat-overdue">
+      <span class="stat-num">{{ svc.overdueCount() }}</span>
+      <span class="stat-label">Overdue</span>
+    </div>
+  </div>
+
+  <!-- ── Filter bar ───────────────────────────────────────────────────────── -->
+  <div class="filters">
+
+    <!-- Tab group -->
+    <div class="tab-group">
+      <!-- @for is Angular 17+'s new built-in control flow (replaces *ngFor) -->
+      <!-- track tells Angular how to identify items for efficient DOM updates -->
+      @for (t of tabs; track t.value) {
+        <button
+          class="tab-btn"
+          [class.active]="tab() === t.value"
+          (click)="tab.set(t.value)">
+          {{ t.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Priority chips -->
+    <div class="priority-group">
+      @for (p of priorities; track p.value) {
+        <button
+          class="chip"
+          [class.active]="priority() === p.value"
+          [attr.data-priority]="p.value"
+          (click)="priority.set(p.value)">
+          {{ p.label }}
+        </button>
+      }
+    </div>
+
+  </div>
+
+  <!-- ── Task list ─────────────────────────────────────────────────────────── -->
+  <div class="task-list">
+
+    <!-- @if is Angular 17+'s new built-in control flow (replaces *ngIf) -->
+    @if (filteredTasks().length === 0) {
+      <div class="empty">
+        <div class="empty-icon">✓</div>
+        <p>All clear! No tasks here.</p>
+      </div>
+    }
+
+    @for (task of filteredTasks(); track task.id) {
+      <!-- Property binding: [task]="task" passes the task object into the child component -->
+      <app-task-item [task]="task" />
+    }
+
+  </div>
+
+</div>
+
+<!-- ── Add task modal ────────────────────────────────────────────────────── -->
+<!-- The modal is only rendered when showModal() is true -->
+@if (showModal()) {
+  <!-- (close) listens for the EventEmitter output from AddTaskComponent -->
+  <app-add-task (close)="showModal.set(false)" />
+}

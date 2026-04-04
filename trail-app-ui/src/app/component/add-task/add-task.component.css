@@ -1,0 +1,182 @@
+@keyframes fadeIn  { from { opacity: 0 }                          to { opacity: 1 }                }
+@keyframes slideUp { from { transform: translateY(24px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+
+/* ── Backdrop ───────────────────────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  animation: fadeIn 0.15s ease;
+}
+
+/* ── Modal ──────────────────────────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  border-radius: 20px 20px 0 0;
+  padding: 24px;
+  z-index: 101;
+  animation: slideUp 0.22s ease;
+  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.14);
+}
+
+/* On wider screens, center it as a dialog */
+@media (min-width: 600px) {
+  .modal {
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 16px;
+  }
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.btn-close {
+  background: #f3f4f6;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
+
+.btn-close:hover { background: #e5e7eb; }
+
+/* ── Form fields ─────────────────────────────────────────────────────────── */
+.field { margin-bottom: 16px; }
+
+label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.required { color: #ef4444; }
+.optional  { color: #9ca3af; font-weight: 400; }
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+input:focus, textarea:focus, select:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08); }
+
+input.invalid { border-color: #ef4444; }
+
+textarea { resize: none; }
+
+.error {
+  display: block;
+  font-size: 0.75rem;
+  color: #ef4444;
+  margin-top: 5px;
+}
+
+/* ── Side-by-side fields ────────────────────────────────────────────────── */
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ── Priority toggle buttons ────────────────────────────────────────────── */
+.priority-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.pri-btn {
+  flex: 1;
+  padding: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-transform: capitalize;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.pri-btn[data-p="high"].active   { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+.pri-btn[data-p="medium"].active { background: #fffbeb; border-color: #fcd34d; color: #d97706; }
+.pri-btn[data-p="low"].active    { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
+
+/* ── Form actions ───────────────────────────────────────────────────────── */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-cancel:hover { background: #f9fafb; }
+
+.btn-submit {
+  flex: 2;
+  padding: 11px;
+  border-radius: 10px;
+  border: none;
+  background: #4f46e5;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.btn-submit:hover { background: #4338ca; }

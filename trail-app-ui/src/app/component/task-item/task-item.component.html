@@ -1,0 +1,45 @@
+<!-- [class.completed] dynamically adds/removes the CSS class based on the expression -->
+<div class="task-card" [class.completed]="task.completed">
+
+  <!-- Left priority bar — data-priority drives the CSS color -->
+  <div class="priority-bar" [attr.data-priority]="task.priority"></div>
+
+  <!-- Checkbox — clicking calls the service directly from the template -->
+  <div class="check-wrap" (click)="svc.toggleComplete(task.id)">
+    <div class="checkbox" [class.checked]="task.completed">
+      @if (task.completed) {
+        <span class="check-mark">✓</span>
+      }
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="task-content">
+    <div class="task-header">
+      <span class="task-title">{{ task.title }}</span>
+      <div class="task-badges">
+        <!-- [attr.data-priority] sets an HTML attribute dynamically for CSS targeting -->
+        <span class="badge priority-badge" [attr.data-priority]="task.priority">
+          {{ task.priority }}
+        </span>
+        <span class="badge category-badge">{{ task.category }}</span>
+      </div>
+    </div>
+
+    @if (task.description) {
+      <p class="task-desc">{{ task.description }}</p>
+    }
+
+    @if (task.dueDate) {
+      <!-- [class.overdue] adds the class only when isOverdue getter returns true -->
+      <div class="due-date" [class.overdue]="isOverdue">
+        <span>⏰</span>
+        <span>{{ dueDateLabel }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Delete button -->
+  <button class="btn-delete" (click)="svc.deleteTask(task.id)" title="Delete task">✕</button>
+
+</div>
